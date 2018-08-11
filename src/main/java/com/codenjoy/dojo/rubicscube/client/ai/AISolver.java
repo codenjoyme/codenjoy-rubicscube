@@ -31,12 +31,12 @@ import com.codenjoy.dojo.rubicscube.client.Rotate;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.RandomDice;
 
-public class ApofigSolver implements Solver<Board> {
+public class AISolver implements Solver<Board> {
 
     private Dice dice;
     private Board board;
 
-    public ApofigSolver(Dice dice) {
+    public AISolver(Dice dice) {
         this.dice = dice;
     }
 
@@ -57,7 +57,7 @@ public class ApofigSolver implements Solver<Board> {
 
     public static void start(String name, Dice dice) {
         WebSocketRunner.runAI(name,
-                new ApofigSolver(dice),
+                new AISolver(dice),
                 new Board());
     }
 
