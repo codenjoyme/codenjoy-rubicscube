@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.rubicscube.client.ai;
+package com.codenjoy.dojo.rubicscube.services.ai;
 
 /*-
  * #%L
