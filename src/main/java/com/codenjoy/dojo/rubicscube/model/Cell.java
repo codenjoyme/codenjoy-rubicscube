@@ -29,6 +29,7 @@ import com.codenjoy.dojo.services.PointImpl;
 import com.codenjoy.dojo.services.printer.state.State;
 
 public class Cell extends PointImpl implements State<Element, Player> {
+
     private Element color;
 
     public Cell(Point point, Element color) {
@@ -41,12 +42,8 @@ public class Cell extends PointImpl implements State<Element, Player> {
         return String.format("pt%s=%s", super.toString(), color.ch());
     }
 
-    public char getColor() {
-        return color.ch();
-    }
-
     @Override
     public Element state(Player player, Object... alsoAtPoint) {
-        return Element.valueOf(this.getColor());
+        return color;
     }
 }
