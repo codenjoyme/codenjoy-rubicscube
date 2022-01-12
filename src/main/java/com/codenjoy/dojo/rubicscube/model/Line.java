@@ -22,17 +22,19 @@ package com.codenjoy.dojo.rubicscube.model;
  * #L%
  */
 
+import com.codenjoy.dojo.client.ElementsMap;
 import com.codenjoy.dojo.games.rubicscube.Element;
 
 public class Line {
 
+    private static final ElementsMap<Element> elements = new ElementsMap<>(Element.values());
     public static final int SIZE = 3;
 
     private Element[] line = new Element[SIZE];
 
     public Line(String line) {
         for (int index = 0; index < SIZE; index++) {
-            this.line[index] = Element.valueOf(line.charAt(index));
+            this.line[index] = elements.get(line.charAt(index));
         }
     }
 
