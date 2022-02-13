@@ -23,26 +23,28 @@ package com.codenjoy.dojo.rubicscube.services;
  */
 
 import com.codenjoy.dojo.services.event.Calculator;
+import com.codenjoy.dojo.services.settings.PropertiesKey;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
 import com.codenjoy.dojo.services.settings.SettingsReader;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static com.codenjoy.dojo.rubicscube.services.GameRunner.GAME_NAME;
 import static com.codenjoy.dojo.rubicscube.services.GameSettings.Keys.FAIL_PENALTY;
 import static com.codenjoy.dojo.rubicscube.services.GameSettings.Keys.SUCCESS_SCORE;
 
 public class GameSettings extends SettingsImpl implements SettingsReader<GameSettings> {
 
-    public enum Keys implements Key {
+    public enum Keys implements PropertiesKey {
 
-        SUCCESS_SCORE("[Score] Success score"),
-        FAIL_PENALTY("[Score] Fail penalty");
+        SUCCESS_SCORE,
+        FAIL_PENALTY;
 
         private String key;
 
-        Keys(String key) {
-            this.key = key;
+        Keys() {
+            this.key = key(GAME_NAME);
         }
 
         @Override
