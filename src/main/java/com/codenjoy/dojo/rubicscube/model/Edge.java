@@ -42,7 +42,7 @@ public class Edge {
         return String.format("[%s-%s:%s%s]",
                 face1.name(),
                 face2.name(),
-                color1.value(),
-                color2.value());
+                color1.ch(),
+                color2.ch());
     }
 }

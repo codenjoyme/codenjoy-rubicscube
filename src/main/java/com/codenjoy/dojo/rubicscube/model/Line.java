@@ -59,7 +59,7 @@ public class Line {
     public String toString() {
         String result = "";
         for (int index = 0; index < SIZE; index++) {
-            result += get(index).value();
+            result += get(index).ch();
         }
         return result;
     }
