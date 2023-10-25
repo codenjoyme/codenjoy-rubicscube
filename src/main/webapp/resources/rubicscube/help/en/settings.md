@@ -1,4 +1,4 @@
-| Settings name | Action |
-|---------------|--------|
-| SUCCESS_SCORE | [Score] Success score |
-| FAIL_PENALTY | [Score] Fail penalty |
+| Action | Settings name |
+|--------|---------------|
+| [Score] Success score | SUCCESS_SCORE |
+| [Score] Fail penalty | FAIL_PENALTY |
