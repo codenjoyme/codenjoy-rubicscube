@@ -24,110 +24,77 @@ package com.codenjoy.dojo.rubicscube.services;
 
 
 import com.codenjoy.dojo.rubicscube.TestGameSettings;
-import com.codenjoy.dojo.services.PlayerScores;
-import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
-import org.junit.Before;
+import com.codenjoy.dojo.services.event.ScoresMap;
+import com.codenjoy.dojo.utils.scorestest.AbstractScoresTest;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.rubicscube.services.GameSettings.Keys.FAIL_PENALTY;
 import static com.codenjoy.dojo.rubicscube.services.GameSettings.Keys.SUCCESS_SCORE;
-import static org.junit.Assert.assertEquals;
 
-public class ScoresTest {
+public class ScoresTest extends AbstractScoresTest {
 
-    private PlayerScores scores;
-    private GameSettings settings;
-
-    public void fail() {
-        scores.event(Event.FAIL);
+    @Override
+    public GameSettings settings() {
+        return new TestGameSettings()
+                .integer(SUCCESS_SCORE, 10)
+                .integer(FAIL_PENALTY, -5);
     }
 
-    public void success() {
-        scores.event(Event.SUCCESS);
+    @Override
+    protected Class<? extends ScoresMap> scores() {
+        return Scores.class;
     }
 
-    @Before
-    public void setup() {
-        settings = new TestGameSettings();
+    @Override
+    protected Class<? extends Enum> eventTypes() {
+        return Event.class;
     }
 
     @Test
     public void shouldCollectScores() {
-        // given
-        givenScores(140);
-
-        // when
-        success();
-        success();
-        success();
-        success();
-
-        fail();
-
-        // then
-        assertEquals(140
-                    + 4 * settings.integer(SUCCESS_SCORE)
-                    + settings.integer(FAIL_PENALTY),
-                scores.getScore());
-    }
-
-    private void givenScores(int score) {
-        scores = new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
+        assertEvents("100:\n" +
+                "SUCCESS > +10 = 110\n" +
+                "SUCCESS > +10 = 120\n" +
+                "SUCCESS > +10 = 130\n" +
+                "SUCCESS > +10 = 140\n" +
+                "FAIL > -5 = 135");
     }
 
     @Test
     public void shouldNotBeLessThanZero() {
-        // given
-        givenScores(0);
-
-        // when
-        fail();
-
-        // then
-        assertEquals(0, scores.getScore());
+        assertEvents("10:\n" +
+                "FAIL > -5 = 5\n" +
+                "FAIL > -5 = 0\n" +
+                "FAIL > +0 = 0");
     }
 
     @Test
     public void shouldCleanScore() {
-        // given
-        givenScores(0);
-        success();
-
-        // when
-        scores.clear();
-
-        // then
-        assertEquals(0, scores.getScore());
+        assertEvents("100:\n" +
+                "SUCCESS > +10 = 110\n" +
+                "(CLEAN) > -110 = 0\n" +
+                "SUCCESS > +10 = 10");
     }
 
     @Test
     public void shouldCollectScores_whenSuccess() {
         // given
-        givenScores(140);
+        settings.integer(SUCCESS_SCORE, 10);
 
-        // when
-        success();
-        success();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(SUCCESS_SCORE),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "SUCCESS > +10 = 110\n" +
+                "SUCCESS > +10 = 120");
     }
 
     @Test
     public void shouldCollectScores_whenFail() {
         // given
-        givenScores(140);
+        settings.integer(FAIL_PENALTY, -5);
 
-        // when
-        fail();
-        fail();
-
-        // then
-        assertEquals(140
-                    + 2 * settings.integer(FAIL_PENALTY),
-                scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "FAIL > -5 = 95\n" +
+                "FAIL > -5 = 90");
     }
 }
